@@ -3,11 +3,12 @@ const state = { games: [], q: "", era: "全部", onlyLoop: false };
 const eraOrder = ["远古与桌游", "街机黄金期", "8–16位主机", "九十年代奠基", "现代经典"];
 
 async function boot() {
-  const [games, meta] = await Promise.all([
-    fetch("data/games.json").then((r) => r.json()),
+  const [gamesA, gamesB, meta] = await Promise.all([
+    fetch("data/games-a.json").then((r) => r.json()),
+    fetch("data/games-b.json").then((r) => r.json()),
     fetch("data/meta.json").then((r) => r.json()),
   ]);
-  state.games = games;
+  state.games = [...gamesA, ...gamesB];
   document.getElementById("stats").innerHTML = [
     `共 <b>${meta.count}</b> 部经典`,
     `已拆循环 <b>${meta.withLoop}</b>`,
