@@ -2,13 +2,25 @@ const state = { games: [], q: "", era: "全部", onlyLoop: false };
 
 const eraOrder = ["远古与桌游", "街机黄金期", "8–16位主机", "九十年代奠基", "现代经典"];
 
+async function gunzipB64(b64) {
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  const ds = new DecompressionStream("gzip");
+  const stream = new Blob([bytes]).stream().pipeThrough(ds);
+  const buf = await new Response(stream).arrayBuffer();
+  return JSON.parse(new TextDecoder().decode(buf));
+}
+
 async function boot() {
-  const [gamesA, gamesB, meta] = await Promise.all([
-    fetch("data/games-a.json").then((r) => r.json()),
-    fetch("data/games-b.json").then((r) => r.json()),
+  const [p1, p2, p3, p4, meta] = await Promise.all([
+    fetch("data/games-1.b64").then((r) => r.text()),
+    fetch("data/games-2.b64").then((r) => r.text()),
+    fetch("data/games-3.b64").then((r) => r.text()),
+    fetch("data/games-4.b64").then((r) => r.text()),
     fetch("data/meta.json").then((r) => r.json()),
   ]);
-  state.games = [...gamesA, ...gamesB];
+  state.games = await gunzipB64((p1 + p2 + p3 + p4).replace(/\s+/g, ""));
   document.getElementById("stats").innerHTML = [
     `共 <b>${meta.count}</b> 部经典`,
     `已拆循环 <b>${meta.withLoop}</b>`,
@@ -48,7 +60,6 @@ async function boot() {
     if (e.key === "Escape") closeDrawer();
   });
 
-  // GitHub pages repo link guess
   const repo = document.getElementById("repoLink");
   if (location.hostname.endsWith("github.io")) {
     const user = location.hostname.split(".")[0];
