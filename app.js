@@ -13,14 +13,10 @@ async function gunzipB64(b64) {
 }
 
 async function boot() {
-  const [p1, p2, p3, p4, meta] = await Promise.all([
-    fetch("data/games-1.b64").then((r) => r.text()),
-    fetch("data/games-2.b64").then((r) => r.text()),
-    fetch("data/games-3.b64").then((r) => r.text()),
-    fetch("data/games-4.b64").then((r) => r.text()),
-    fetch("data/meta.json").then((r) => r.json()),
-  ]);
-  state.games = await gunzipB64((p1 + p2 + p3 + p4).replace(/\s+/g, ""));
+  const meta = await fetch("data/meta.json").then((r) => r.json());
+  const parts = window.__GAME_B64_PARTS;
+  if (!parts || !parts.length) throw new Error("missing game data parts");
+  state.games = await gunzipB64(parts.join(""));
   document.getElementById("stats").innerHTML = [
     `共 <b>${meta.count}</b> 部经典`,
     `已拆循环 <b>${meta.withLoop}</b>`,
