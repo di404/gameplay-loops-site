@@ -1,1 +1,55 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>经典玩法循环库</title>
+  <meta name="description" content="从远古桌游到现代经典：拆解问题、对手、失败与取舍，供游戏策划借鉴。" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="eyebrow">Gameplay Loop Classics</p>
+      <h1>经典玩法循环库</h1>
+      <p class="lede">从远古桌游到街机、主机与现代经典。少看皮相，多看<strong>问题 / 对手 / 失败 / 取舍</strong>。</p>
+      <div class="stats" id="stats"></div>
+    </div>
+  </header>
+
+  <section class="toolbar wrap">
+    <label class="search">
+      <span class="sr">搜索</span>
+      <input id="q" type="search" placeholder="搜游戏名、动词、类型…" autocomplete="off" />
+    </label>
+    <div class="filters" id="eraFilters" role="group" aria-label="年代筛选"></div>
+    <label class="check">
+      <input type="checkbox" id="onlyLoop" />
+      只看已拆循环
+    </label>
+  </section>
+
+  <main class="wrap layout">
+    <aside class="timeline" id="timeline" aria-label="时间线"></aside>
+    <section class="list" id="list" aria-live="polite"></section>
+  </main>
+
+  <div class="drawer" id="drawer" hidden>
+    <div class="drawer-backdrop" data-close></div>
+    <article class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="d-title">
+      <button class="close" type="button" data-close aria-label="关闭">×</button>
+      <p class="d-era" id="d-era"></p>
+      <h2 id="d-title"></h2>
+      <p class="d-meta" id="d-meta"></p>
+      <p class="d-lesson" id="d-lesson"></p>
+      <div id="d-loop"></div>
+    </article>
+  </div>
+
+  <footer class="site-footer wrap">
+    <p>条目来自玩法循环知识库；机制描述需社区校对。欢迎 PR / Issue 修补。</p>
+    <p><a href="https://github.com/di404/gameplay-loops-site" id="repoLink">GitHub</a> · 字段对齐 Game design gate</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
